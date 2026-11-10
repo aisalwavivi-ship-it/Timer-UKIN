@@ -84,7 +84,6 @@ export const StageList: React.FC<StageListProps> = ({
   const handleDeleteStage = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (stages.length <= 1) {
-      alert('Minimal harus memiliki 1 tahap timer.');
       return;
     }
     const updated = stages.filter((s) => s.id !== id);
@@ -362,8 +361,9 @@ export const StageList: React.FC<StageListProps> = ({
                 {/* Delete Button */}
                 <button
                   onClick={(e) => handleDeleteStage(stage.id, e)}
-                  title="Hapus Tahap"
-                  className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                  disabled={stages.length <= 1}
+                  title={stages.length <= 1 ? 'Minimal harus memiliki 1 tahap' : 'Hapus Tahap'}
+                  className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

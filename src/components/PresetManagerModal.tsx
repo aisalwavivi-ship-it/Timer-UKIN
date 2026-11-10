@@ -70,9 +70,12 @@ export const PresetManagerModal: React.FC<PresetManagerModalProps> = ({
     downloadAnchor.remove();
   };
 
+  const [importError, setImportError] = useState<string | null>(null);
+
   const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setImportError(null);
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
@@ -80,10 +83,10 @@ export const PresetManagerModal: React.FC<PresetManagerModalProps> = ({
         if (Array.isArray(json)) {
           onImportPresets(json);
         } else {
-          alert('Format berkas preset tidak sesuai format JSON yang valid.');
+          setImportError('Format berkas preset tidak sesuai format JSON yang valid.');
         }
       } catch (err) {
-        alert('Gagal membaca berkas JSON: ' + (err as Error).message);
+        setImportError('Gagal membaca berkas JSON: ' + (err as Error).message);
       }
     };
     reader.readAsText(file);
@@ -167,6 +170,18 @@ export const PresetManagerModal: React.FC<PresetManagerModalProps> = ({
 
         {/* Content List */}
         <div className="p-6 overflow-y-auto space-y-3.5">
+          {importError && (
+            <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl text-xs text-rose-700 dark:text-rose-300 flex items-center justify-between">
+              <span>{importError}</span>
+              <button
+                onClick={() => setImportError(null)}
+                className="text-rose-500 hover:text-rose-700 font-bold ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           {/* Save Preset Form */}
           {isSaving && (
             <form onSubmit={handleSave} className="p-4 rounded-xl border border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/30 space-y-3">

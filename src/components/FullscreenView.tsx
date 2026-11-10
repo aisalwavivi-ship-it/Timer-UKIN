@@ -78,6 +78,17 @@ export const FullscreenView: React.FC<FullscreenViewProps> = ({
     };
   }, [status]);
 
+  // Handle Escape key to exit fullscreen
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onExitFullscreen();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onExitFullscreen]);
+
   if (!currentStage) return null;
 
   const stageDuration = currentStage.durationSeconds;

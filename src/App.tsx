@@ -155,7 +155,7 @@ export default function App() {
   }, []);
 
   // Current and Next stage objects
-  const currentStage = stages[currentStageIndex];
+  const currentStage = stages[currentStageIndex] || stages[0];
   const nextStage = stages[currentStageIndex + 1];
   const totalDurationSeconds = calculateTotalDuration(stages);
   const totalSecondsElapsed = calculateElapsedSeconds(stages, currentStageIndex, stageSecondsRemaining);
@@ -539,9 +539,13 @@ export default function App() {
               currentStageIndex={currentStageIndex}
               onUpdateStages={(newStages) => {
                 setStages(newStages);
+                const safeIdx = Math.min(currentStageIndex, Math.max(0, newStages.length - 1));
+                if (safeIdx !== currentStageIndex) {
+                  setCurrentStageIndex(safeIdx);
+                }
                 // if active stage was affected, sync remaining seconds if idle
-                if (status === 'idle' && newStages[currentStageIndex]) {
-                  setStageSecondsRemaining(newStages[currentStageIndex].durationSeconds);
+                if (status === 'idle' && newStages[safeIdx]) {
+                  setStageSecondsRemaining(newStages[safeIdx].durationSeconds);
                 }
               }}
               onSelectStage={handleSelectStage}
