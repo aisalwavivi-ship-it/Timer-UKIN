@@ -1,0 +1,6 @@
+{
+  "name": "UKIN Timer Pro - Timer Sekuensial Praktik Pembelajaran",
+  "description": "Timer berantai otomatis multi-tahap khusus peserta PPG dan guru untuk take video UKIN dan microteaching dengan pengingat suara, petunjuk sintaks, dan mode layar penuh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
